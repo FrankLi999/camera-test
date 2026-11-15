@@ -1,9 +1,10 @@
 "use client";
 
+import { CAMERA_FACING_MODEL, getVideoConstraints } from "@/utils/utils";
 import { useEffect, useRef, useState, useCallback } from "react";
 
 interface UseCameraOptions {
-  facingMode?: "user" | "environment";
+  facingMode?: CAMERA_FACING_MODEL;
   onFrame?: (ctx: CanvasRenderingContext2D, video: HTMLVideoElement, canvas: HTMLCanvasElement) => void;
 }
 
@@ -72,14 +73,7 @@ export function useCamera({ facingMode = "user", onFrame }: UseCameraOptions = {
     setError(null);
 
     try {
-      const constraints: MediaStreamConstraints = {
-        audio: false,
-        video: {
-          facingMode: { ideal: facingMode },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-      };
+      const constraints: MediaStreamConstraints = getVideoConstraints(facingMode);
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       streamRef.current = stream;

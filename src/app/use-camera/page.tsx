@@ -41,7 +41,7 @@ const UseCamera = () => {
     }
   }, []);
   const { videoRef, canvasRef, isStreaming, error, startCamera, stopCamera } = useCamera({
-    facingMode: "environment",
+    facingMode: "user",
     onFrame: handleFrame,
   });
   useEffect(() => {
@@ -115,6 +115,7 @@ return (
      <div className={styles.wrapper}>
        {/* {error && <p className={styles.error}>{error}</p>} */}
         <h1 className="text-2xl mb-4">Photo capture with Mediapipe</h1>
+        {/* eslint-disable-next-line react-hooks/refs */}
         <h2 className={`mt-4 text-lg ${liveness.includes('✅') ? 'text-green-500' : 'text-red-500'}`}> {liveness} - Mediapipe model loading time: {modelLoadingTime.current}</h2>
         <div className={styles.controls}>
           <button type="button" onClick={handleNavToNext} className={styles.button}>
@@ -133,13 +134,13 @@ return (
             <canvas ref={canvasRefCallback} className={styles.canvas} />
             {/* Centered Oval Guide Overlay */}
             <div className={styles.overlay}>
-              {/* <div className={styles.ovalGuide}  /> */}
               <div className={styles.ovalGuide} style={{
                   width: `${dimensions.width}px`,
                   height: `${dimensions.height}px`,
                 }}  
               />
               <p className={styles.instructionText}>
+                {/* eslint-disable-next-line react-hooks/refs */}
                 Position your face inside the oval {videoRef.current?.videoHeight}/{videoRef.current?.videoWidth}
               </p>
             </div>
