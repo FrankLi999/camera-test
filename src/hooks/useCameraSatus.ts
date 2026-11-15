@@ -4,7 +4,7 @@ import {
     CAMERA_STATUS_NO_DEVICES,
     CAMERA_STATUS_SUCCESS,
     CameraDeviceStatus,
-} from "@/components/utils/Constants";
+} from "@/utils/Constants";
 
 export interface CameraPermissionResult {
   cameraStatus: CameraDeviceStatus
@@ -32,6 +32,7 @@ export const useCameraStatus = (): CameraPermissionResult => {
         return false;
       }
       try {
+        console.log(">>>>>>>>>>> Home page getUserMedia")
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: false,
           video: {
@@ -40,14 +41,16 @@ export const useCameraStatus = (): CameraPermissionResult => {
             height: { ideal: 960 },
           },
         });
-
+        console.log(">>>>>>>>>>> Home page getUserMedia 11111")
         stream.getTracks().forEach(track => track.stop());
+        console.log(">>>>>>>>>>> Home page getUserMedia 22222222")
         setCameraStatus((prev) => ({
             ...prev,
             status: CAMERA_STATUS_SUCCESS,
         }));
         return true;
       } catch (error: any) {
+        console.log(">>>>>>>>>>> Home page getUserMedia 3333", error)
         if (error instanceof Error) {
             console.log(
                 "webcam error: ",

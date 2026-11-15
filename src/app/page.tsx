@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';  
 import styles from './page.module.css';
-import { useCameraStatus } from '@/components/hooks/use-camera-status';
+import { useCameraStatus } from '@/hooks/useCameraSatus';
 
 const CameraPermission = () => {
     const router = useRouter();

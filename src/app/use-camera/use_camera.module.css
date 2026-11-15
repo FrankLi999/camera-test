@@ -1,0 +1,192 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background-color: #111;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* Desktop Default: 1200x800 */
+.mediaContainer {
+  position: relative;
+  width: 1200px;
+  height: 800px;
+  max-width: 100%; /* Prevents horizontal overflow on smaller desktop windows */
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.video,
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures video fills the container without distortion */
+}
+.video {
+  z-index: 1; /* Keep video explicitly on layer 1 */
+  /* Mirrors the front camera so it feels natural */
+  transform: scaleX(-1);
+  /* Mirror the front camera AND zoom out (0.75) to make the face smaller */
+  /* transform: scaleX(-1) scale(0.75); */
+}
+.canvas {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+
+  z-index: 5; /* Keep canvse explicitly on layer 5 */
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.controls {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #0070f3;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #005bb5;
+}
+
+.secondary {
+  background-color: #444;
+}
+
+.secondary:hover {
+  background-color: #666;
+}
+
+.error {
+  color: #ff4d4f;
+  margin-bottom: 1rem;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Allows clicks to pass through to underlying UI */
+  z-index: 10; /* Higher than video and canvas */
+}
+
+
+.ovalGuide1 {
+  /* Responsive sizing for both mobile portrait and desktop landscape */
+  width: clamp(220px, 55vw, 320px);
+  height: clamp(300px, 42vh, 440px);
+  border-radius: 50%;
+  border: 3px dashed #ffffff;
+  
+  /* Creates the dark backdrop around the oval*/
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+} 
+
+
+.ovalGuide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;  /* Turns a rectangle of dynamic width/height into a true ellipse*/
+  border: 3px dashed #ffffff;
+  /* border: 3px dashed #00ff88; */
+  /* Dims the area outside the oval so the user focuses on the center */
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.instructionText {
+  position: absolute;
+  bottom: 12%;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+
+/* Mobile Layout: Vertical Orientation */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0;
+    justify-content: space-between;
+    
+  }
+
+  .mediaContainer {
+    width: 80vw;
+    height: 60vh; /* Leaves space at the bottom for controls */
+    border-radius: 0;
+    aspect-ratio: 3 / 4;
+    max-width: 320px; /* Controls how large the viewfinder appears on screen */
+    aspect-ratio: 3 / 4; /* Matches standard mobile portrait framing */
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: #000;
+  }
+
+  .controls {
+    margin-top: 0;
+    padding: 1.25rem;
+    width: 100%;
+    justify-content: center;
+    background-color: #111;
+    box-sizing: border-box;
+  }
+
+
+  .video,
+  .canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: conatin; /* Ensures video fills the container without distortion */
+    /* Mirrors the front camera so it feels natural */
+    transform: scaleX(-1);
+
+    /* Mirror the front camera AND zoom out (0.75) to make the face smaller */
+    /* transform: scaleX(-1) scale(0.75); */
+  }
+
+  .canvas {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+}
