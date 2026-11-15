@@ -7,7 +7,7 @@ interface UseCameraOptions {
   onFrame?: (ctx: CanvasRenderingContext2D, video: HTMLVideoElement, canvas: HTMLCanvasElement) => void;
 }
 
-export function useCamera({ facingMode = "environment", onFrame }: UseCameraOptions = {}) {
+export function useCamera({ facingMode = "user", onFrame }: UseCameraOptions = {}) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
