@@ -10,7 +10,7 @@ import Loading from '@/components/loading';
 
 
 
-const UseCamera2 = observer(() => {
+const UseCamera2 = () => {
   const router = useRouter();
   const { mediapipeStore } = useMobxStore();
   const [liveness, setLiveness] = useState('Checking...');
@@ -132,6 +132,6 @@ return (
       </div>
     )
   );
-});
+};
 
-export default UseCamera2;
+export default observer(UseCamera2);

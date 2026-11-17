@@ -9,7 +9,7 @@ import { useMobxStore } from '@/store/mobx/useMobxStore';
 import Loading from '@/components/loading';
 
 
-const UseCamera = observer(() => {
+const UseCamera = () => {
   const router = useRouter();
   const { mediapipeStore } = useMobxStore();
   const [liveness, setLiveness] = useState('Checking...');
@@ -133,5 +133,5 @@ return (
         </div>
       )
   );
-});
-export default UseCamera;
+};
+export default observer(UseCamera);

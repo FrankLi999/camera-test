@@ -6,13 +6,13 @@ import styles from './page.module.css';
 import { useCameraStatus } from '@/components/hooks/useCameraSatus';
 import { useMobxStore } from '@/store/mobx/useMobxStore';
 
-const CameraPermission = observer(() => {
+const CameraPermission = () => {
     const router = useRouter();
     const {cameraStatus, checkCameraStatus} = useCameraStatus();
     const { mediapipeStore } = useMobxStore();
-    // useEffect(() => {
-    //   void mediapipeStore.loadMediapipe();
-    // }, [mediapipeStore])
+    useEffect(() => {
+      void mediapipeStore.loadMediapipe();
+    }, [mediapipeStore])
 
     const handleUseCamera = async () => {
         const statusOK = await checkCameraStatus();
@@ -56,6 +56,6 @@ const CameraPermission = observer(() => {
         </button>
       </main>
     );
-});
+};
 
-export default CameraPermission;
+export default observer(CameraPermission);
