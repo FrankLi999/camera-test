@@ -1,25 +1,25 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
-import { FaceLandmarker, HandLandmarker , FilesetResolver } from '@mediapipe/tasks-vision';
+import { observer } from 'mobx-react-lite';
 import { isMobileDevice } from '@/utils/utils';
 import styles from "./use_camera.module.css";
-import { GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL, GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL, GOOGLE_MEDIAPIPE_WASM_BASE_URL } from '@/utils/Constants';
-import { useCamera } from '@/hooks/useCamera';
+import { useCamera } from '@/components/hooks/useCamera';
+import { useMobxStore } from '@/store/mobx/useMobxStore';
+import Loading from '@/components/loading';
 
 
-const UseCamera = () => {
+
+const UseCamera2 = observer(() => {
   const router = useRouter();
-  const faceLandmarkerRef = useRef<FaceLandmarker>(null);
-  const handLandmarkerRef = useRef<HandLandmarker>(null);
-  const modelLoadingTime = useRef<number>(0);
+  const { mediapipeStore } = useMobxStore();
   const [liveness, setLiveness] = useState('Checking...');
   const [videoAndCanvasElementLoaded, setVideoAndCanvasElementLoaded] = useState(false); // for iphone
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Custom frame processor: Convert video frame to Grayscale
   const handleFrame = useCallback((ctx: CanvasRenderingContext2D, video: HTMLVideoElement, canvas: HTMLCanvasElement) => {
-    const results = faceLandmarkerRef.current!.detectForVideo(video, performance.now());
+    const results = mediapipeStore.faceLandmarker!.detectForVideo(video, performance.now());
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (results.faceLandmarks.length > 0) {
       // --- ANTI-SPOOFING LOGIC ---
@@ -39,8 +39,9 @@ const UseCamera = () => {
     } else {
       setLiveness('No Face Detected');
     }
-  }, []);
-  const { videoRef, canvasRef, isStreaming, error, startCamera, stopCamera } = useCamera({
+  }, [mediapipeStore]);
+
+  const { videoRef, canvasRef, startCamera, stopCamera } = useCamera({
     facingMode: "user",
     onFrame: handleFrame,
   });
@@ -48,33 +49,12 @@ const UseCamera = () => {
     console.log(`>>>>>>>>>>>> init. videoElementLoaded: ${videoAndCanvasElementLoaded}, videoRef set:${!!videoRef.current}, canvasRef set:${!!canvasRef.current}`);
     if (!videoAndCanvasElementLoaded && !videoRef.current&& !canvasRef.current) { return;}
     const initFaceDetectorAndStartCamera = async () => {
-      const startModelLoadingTime = performance.now();
-      // 1. Initialize MediaPipe Face Landmarker
-      const filesetResolver = await FilesetResolver.forVisionTasks(
-        GOOGLE_MEDIAPIPE_WASM_BASE_URL
-      );
-      faceLandmarkerRef.current = await FaceLandmarker.createFromOptions(filesetResolver, {
-        baseOptions: { 
-          modelAssetPath: GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL
-        },
-        runningMode: "VIDEO",
-        numFaces: 1
-      });
-
-      handLandmarkerRef.current = await HandLandmarker.createFromOptions(filesetResolver, {
-        baseOptions: {
-          modelAssetPath: GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL,
-          delegate: "GPU",
-        },
-        runningMode: "VIDEO", // Use "VIDEO" for video files or webcam loops
-        numHands: 2,
-      });
-      const endModelLoadingTime = performance.now();
-      modelLoadingTime.current = (endModelLoadingTime - startModelLoadingTime) / 1000
+      await mediapipeStore.loadMediapipe();
       await startCamera();
     };
     initFaceDetectorAndStartCamera();
-  }, [videoAndCanvasElementLoaded]); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoAndCanvasElementLoaded, mediapipeStore, startCamera]); 
   
   const videoRefCallback = useCallback((node: HTMLVideoElement | null) => {
     if (node !== null) {
@@ -108,18 +88,22 @@ const UseCamera = () => {
 
   const handleNavToNext = () => {
     stopCamera();
-    router.push("/use-camera2");
+    router.push("/mobx");
   }; 
 
 return (
+    mediapipeStore.isLoading() ? (
+      <Loading />
+    ) : (
      <div className={styles.wrapper}>
        {/* {error && <p className={styles.error}>{error}</p>} */}
         <h1 className="text-2xl mb-4">Photo capture with Mediapipe</h1>
+        
         {/* eslint-disable-next-line react-hooks/refs */}
-        <h2 className={`mt-4 text-lg ${liveness.includes('✅') ? 'text-green-500' : 'text-red-500'}`}> {liveness} - Mediapipe model loading time: {modelLoadingTime.current}</h2>
+        <h2 className={`mt-4 text-lg ${liveness.includes('✅') ? 'text-green-500' : 'text-red-500'}`}> {liveness} - Mediapipe model loading time: {mediapipeStore.timeToLoadMediaPipe}</h2>
         <div className={styles.controls}>
           <button type="button" onClick={handleNavToNext} className={styles.button}>
-            Next
+            Restart
           </button>
         </div>
         <div className={styles.mediaContainer}>
@@ -145,8 +129,9 @@ return (
               </p>
             </div>
         </div>
-
-    </div>
+      </div>
+    )
   );
-}
-export default UseCamera;
+});
+
+export default UseCamera2;

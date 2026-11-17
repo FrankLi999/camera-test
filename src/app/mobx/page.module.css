@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.status {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2.5rem;
+}
+
+.nextButton {
+  padding: 1.25rem 3rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #0070f3;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.nextButton:hover {
+  background-color: #0051a8;
+}
+
+.nextButton:active {
+  transform: scale(0.98);
+}

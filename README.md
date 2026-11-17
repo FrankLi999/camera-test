@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Test 1 - fundamental
 
-## Getting Started
+    start with "/" -> "/photo-permission/use-camera" -> "/photo-permission/use-camera2" -> "/"
 
-First, run the development server:
+## Test 2 - mobx
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+use <i>mobx</i> store keep track Google mediapipe status
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    start with "/mobx" -> "/mobx/use-camera" -> "/mobx/use-camera2" -> "/mobx"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Test 3 - zustand
 
-## Learn More
+use <i>zustand</i> store keep track Google mediapipe status
 
-To learn more about Next.js, take a look at the following resources:
+    start with "/zustand" -> "/zustand/use-camera" -> "/zustand/use-camera2" -> "/zustand"    
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Test 3 - React context
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+use <i>React context</i> store keep track Google mediapipe status
 
-## Deploy on Vercel
+    start with "/context-provider" -> "/context-provider/use-camera" -> "/context-provider/use-camera2" -> "/context-provider"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- stop camera
+
+   <i>stopCamera</i> at "Next" button event handler instead of via useEffect return function.
+
+- Firefox url to test Camera - getUserMedia
+
+  [gUM Test Page](https://mozilla.github.io/webrtc-landing/gum_test.html)
+
+  

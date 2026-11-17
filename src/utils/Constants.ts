@@ -19,9 +19,9 @@ export type CameraDeviceContext = {
 
 export const GOOGLE_MEDIAPIPE_WASM_BASE_URL = "/wasm/mediapipe"; 
 // export const GOOGLE_MEDIAPIPE_WASM_BASE_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-export const GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL = "models/mediapipe/face_landmarker.task"; 
+export const GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL = "/models/mediapipe/face_landmarker.task"; 
 // export const GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"; 
-export const GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL = "models/mediapipe/hand_landmarker.task"; 
+export const GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL = "/models/mediapipe/hand_landmarker.task"; 
 // export const GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"; 
 
 export const ERROR_ENABLE_CAMERA_PERMISSION_MSG =

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';  
 import styles from './page.module.css';
-import { useCameraStatus } from '@/hooks/useCameraSatus';
+import { useCameraStatus } from '@/components/hooks/useCameraSatus';
 
 const CameraPermission = () => {
     const router = useRouter();
@@ -11,10 +11,21 @@ const CameraPermission = () => {
     const handleUseCamera = async () => {
         const statusOK = await checkCameraStatus();
         if (statusOK) {
-            router.push("/use-camera")
+            router.push("/photo-permission/use-camera")
         }
     };
+
+    const handleMobxTest = () => {
+       window.location.href = "/mobx";
+    }
     
+    const handleZustandTest = () => {
+       window.location.href = "/zustand";
+    }
+
+    const handleContextProviderTest = () => {
+       window.location.href = "/context-provider";
+    }
     return (
       <main className={styles.container}>
         <h1 className={styles.title}>Test Camera Permiossion</h1>
@@ -22,6 +33,18 @@ const CameraPermission = () => {
         
         <button onClick={handleUseCamera} className={styles.nextButton}>
           Check camera permission and use camera
+        </button>
+
+        <button style={{marginTop: "6px"}} onClick={handleMobxTest} className={styles.nextButton}>
+          Test with mobx store
+        </button>
+        
+        <button style={{marginTop: "6px"}} onClick={handleZustandTest} className={styles.nextButton}>
+          Test with sustand store
+        </button>
+
+        <button style={{marginTop: "6px"}} onClick={handleContextProviderTest} className={styles.nextButton}>
+          Test with context provider
         </button>
       </main>
     );

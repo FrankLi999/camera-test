@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';  
-import { useCameraStatus } from '@/hooks/useCameraSatus';
+import { useCameraStatus } from '@/components/hooks/useCameraSatus';
 
 interface CameraPermissionGuardProps {
     children: React.ReactNode,
