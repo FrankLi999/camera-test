@@ -18,9 +18,9 @@ const UseCamera = observer(() => {
   
   // Custom frame processor: Convert video frame to Grayscale
   const handleFrame = useCallback((ctx: CanvasRenderingContext2D, video: HTMLVideoElement, canvas: HTMLCanvasElement) => {
-    const results = mediapipeStore.faceLandmarker!.detectForVideo(video, performance.now());
+    const results = mediapipeStore.faceLandmarker?.detectForVideo(video, performance.now());
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (results.faceLandmarks.length > 0) {
+    if (results && results.faceLandmarks.length > 0) {
       // --- ANTI-SPOOFING LOGIC ---
       // Analyze depth: Real faces have variance in z-axis, 2D photos do not.
       const landmarks = results.faceLandmarks[0]; //478 points

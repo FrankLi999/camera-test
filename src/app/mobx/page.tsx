@@ -10,14 +10,15 @@ const CameraPermission = observer(() => {
     const router = useRouter();
     const {cameraStatus, checkCameraStatus} = useCameraStatus();
     const { mediapipeStore } = useMobxStore();
-    useEffect(() => {
-      void mediapipeStore.loadMediapipe();
-    }, [mediapipeStore])
+    // useEffect(() => {
+    //   void mediapipeStore.loadMediapipe();
+    // }, [mediapipeStore])
 
     const handleUseCamera = async () => {
         const statusOK = await checkCameraStatus();
         if (statusOK) {
-            router.push("/mobx/use-camera")
+            console.log(">>>>>>>>> Will nav to azure liveness");
+            router.push("/azure-liveness")
         }
     };
 

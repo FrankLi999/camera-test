@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: false,
   allowedDevOrigins: ['192.168.40.225'],
   /* config options here */
   cacheComponents: true,

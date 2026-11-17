@@ -10,6 +10,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@azure/ai-vision-face-ui": "1.5.0",
     "@mediapipe/tasks-vision": "^1.2.3",
     "bowser": "^2.15.0",
     "mobx": "^7.1.7",

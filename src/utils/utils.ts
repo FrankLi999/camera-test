@@ -31,28 +31,35 @@ export const getVideoConstraints = (facingMode: CAMERA_FACING_MODEL): MediaStrea
 
 export const loadGoogleMediapipe = async () => {
     const startModelLoadingTime = performance.now();
-    // 1. Initialize MediaPipe Face Landmarker
-    const filesetResolver = await FilesetResolver.forVisionTasks(
-        GOOGLE_MEDIAPIPE_WASM_BASE_URL
-    );
-    const faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
-    baseOptions: { 
-        modelAssetPath: GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL
-    },
-    runningMode: "VIDEO",
-    numFaces: 1
-    });
+    const moduleWindow = window as Window & { Module?: unknown };
+    const savedModule = moduleWindow.Module;
+    moduleWindow.Module = null;
+    try {
+        // 1. Initialize MediaPipe Face Landmarker
+        const filesetResolver = await FilesetResolver.forVisionTasks(
+            GOOGLE_MEDIAPIPE_WASM_BASE_URL
+        );
+        const faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
+        baseOptions: { 
+            modelAssetPath: GOOGLE_MEDIAPIPE_FACE_LANDMARKER_URL
+        },
+        runningMode: "VIDEO",
+        numFaces: 1
+        });
 
-    const handLandmarker = await HandLandmarker.createFromOptions(filesetResolver, {
-    baseOptions: {
-        modelAssetPath: GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL,
-        delegate: "GPU",
-    },
-    runningMode: "VIDEO", // Use "VIDEO" for video files or webcam loops
-    numHands: 2,
-    });
-    const endModelLoadingTime = performance.now();
-    const elapsed = (endModelLoadingTime - startModelLoadingTime) / 1000
+        const handLandmarker = await HandLandmarker.createFromOptions(filesetResolver, {
+        baseOptions: {
+            modelAssetPath: GOOGLE_MEDIAPIPE_HANDLE_LANDMARKER_URL,
+            delegate: "GPU",
+        },
+        runningMode: "VIDEO", // Use "VIDEO" for video files or webcam loops
+        numHands: 2,
+        });
+        const endModelLoadingTime = performance.now();
+        const elapsed = (endModelLoadingTime - startModelLoadingTime) / 1000
 
-    return {faceLandmarker, handLandmarker, elapsed}
+        return {faceLandmarker, handLandmarker, elapsed}
+    } finally {
+        moduleWindow.Module = savedModule;
+    }
 }
